@@ -31,7 +31,7 @@ class Template {
 	// Will simply include the file
 	function add_file( $file ) {
 		if ( !file_exists( $file ) ) {
-			trigger_error( "$file does not exist.", E_USER_ERROR );
+			trigger_error( $file . $this->lang['does_not_exist'], E_USER_ERROR );
 			return false;
 		}
 		$this->content[] = array( 'file', $file );
@@ -59,7 +59,7 @@ class Template {
 		return true;
 	}
 
-	function compile( $cache = false ) {
+	function compile( $cache = false, $location = '' ) {
 		// If this function is called, that means we need to cache the page,
 		// unless we're told not to.
 		if ( $cache == true ) {
@@ -79,12 +79,10 @@ class Template {
 			// Save the output to a file
 			$output = ob_get_contents( );
 			ob_end_flush( );
-			$cache_file_name = sha1( $this->wiki_page ) . '.html';
-			$cache_file = ROOT . 'cache/' . $cache_file_name;
-			$handle = fopen( $cache_file, 'w' );
+			$handle = fopen( ROOT . 'cache/' . $location . '.html', 'w' );
 			$result = fwrite( $handle, $output );
 			if ( $result == false ) {
-				trigger_error( "Could not write to the cache file: $cache_file", E_USER_ERROR );
+				trigger_error( $this->lang['could_not_write_cache'] . ': ' . $cache_file, E_USER_ERROR );
 			}
 			fclose( $handle );
 		}
