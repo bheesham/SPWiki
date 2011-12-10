@@ -30,17 +30,6 @@ include $language_file;
 
 $template 				= new Template( $locale, $lang );
 $template->site_name 	= $site_name;
-=======
-$language_file = ROOT . 'includes/language/' . $language . '.php';
-if ( !file_exists( $language_file ) ) {
-	die('That language file does not exist.');
-}
-include $language_file;
-
-
-$template = new Template( $caching );
->>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
-
 // Load the template configuration but only if the template requires it.
 $template_path 		= 'template/' . $template_name . '/';
 $template_config 	= ROOT . 'template/' . $template_name . '/config.php';
@@ -49,10 +38,6 @@ if ( !file_exists( $template_config ) ) {
 	die( 'That template does not exist.' );
 }
 $template->loc = $template_path;
-=======
-	die('That template does not exist.');
-}
->>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
 include $template_config;
 
 // Get the page that the user is currently viewing
@@ -64,10 +49,6 @@ if ( isset( $_GET['l'] ) && !empty( $_GET['l'] ) ) {
 }
 $wiki_page = Page::get_file_name( $wiki_page );
 
-
 // Set a few template variables.
 $template->wiki_page = $wiki_page;
 $template->page_name = str_replace( '_', ' ', $wiki_page );
-=======
-}
->>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
