@@ -1,6 +1,7 @@
 <?php
 // Copyright (C) 2011 Bheesham Persaud.
 if ( !defined( 'TEST' ) ) {
+<<<<<<< HEAD
 	die( 'Direct script access is not allowed.' );
 }
 ?>
@@ -12,5 +13,13 @@ if ( !defined( 'TEST' ) ) {
 	<?php foreach( $this->js as $js ): ?>
 	<script src="<?php echo $js;?>" type="text/javascript"></script>
 	<?php endforeach; ?>
+=======
+	die('Direct script access is not allowed.');
+}
+?>
+	<!--
+	<script src="template/default/script.js" type="text/javascript"></script>
+	-->
+>>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
 	</body>
 </html>

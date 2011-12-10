@@ -1,11 +1,16 @@
 <?php
 // Copyright (C) 2011 Bheesham Persaud.
 if ( !defined( 'TEST' ) ) {
+<<<<<<< HEAD
 	die( 'Direct script access is not allowed.' );
+=======
+	die('Direct script access is not allowed.');
+>>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
 }
 
 // A class to manage pages
 class Page {
+<<<<<<< HEAD
 
 	// Will replace all special characters except for parenthesis with underscores.
 	static function get_file_name( $page_name ) {
@@ -39,6 +44,21 @@ class Page {
 				return true;
 			}
 			$handle = fopen( $cache_file, 'rb' );
+=======
+	
+	// Will replace all special characters except for parenthesis with underscores.
+	static function get_file_name( $page_name ) {
+		$regexp = '@([^a-z0-9\(\)])@i';
+		return preg_replace( $regexp, '_', $page_name );
+	}
+	
+	// Get the contents of the page file
+	static function page_contents( $page ) {
+		$file_name 	= self::get_file_name( $page );
+		$file 		= ROOT . 'content/' . $file_name . '.json';
+		if ( file_exists( $file ) ) {
+			$handle = fopen( $file , "rb");
+>>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
 			$contents = '';
 			while ( !feof( $handle ) ) {
 				$contents .= fread( $handle, 8192 );
@@ -48,5 +68,10 @@ class Page {
 		}
 		return false;
 	}
+<<<<<<< HEAD
 
 }
+=======
+	
+}
+>>>>>>> 72af57954bdea1e2188ef752c48261a7a1347576
