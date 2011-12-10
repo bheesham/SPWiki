@@ -1,0 +1,14 @@
+* {
+	font-family: "Helvetica", "Arial";
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	padding: 10px;
+}
+
+#container {
+	padding: 10px;
+	background-color: #F5F5F5;
+}
