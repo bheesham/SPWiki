@@ -3,7 +3,7 @@
 define( 'TEST', true );
 include 'includes/bootstrap.php';
 
-if ( isset( $_POST['edit_submit'] ) && isset( $_POST['edit_pass'] ) && $wiki_page != 'Index' ) {
+if ( isset( $_POST['edit_submit'] ) && isset( $_POST['edit_pass'] ) ) {
 	if ( sha1( $_POST['edit_pass'] ) == $password ) {
 		
 		$cache_file_name 	= sha1( $wiki_page ) . '.html';
