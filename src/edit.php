@@ -44,20 +44,17 @@ if ( isset( $_POST['edit_submit'] ) && isset( $_POST['edit_pass'] ) ) {
 
 $page_contents = Page::page_contents( $wiki_page );
 
-$template->add_file( $template->loc . 'header.php' );
 $template->page_name = $lang['editing'] . ': ' . $template->page_name;
 
-$template->add_content( '<form action="edit.php?' . $_SERVER['QUERY_STRING'] . '" method="post">' );
-$template->add_content( '<p><textarea name="edit_wiki" id="edit_wiki">' );
-$template->add_content( $page_contents );
-$template->add_content( '</textarea><br></p>' );
-$template->add_content( '<p><label for="edit_pass">' . $lang['password'] . ': </label> <input type="text" name="edit_pass" id="edit_pass"> <input type="submit" name="edit_submit" value="' . $lang['submit'] . '"></p>' );
-$template->add_content( '</form>' );
+$template->add_content( 'content', '<form action="edit.php?' . $_SERVER['QUERY_STRING'] . '" method="post">' );
+$template->add_content( 'content', '<p><textarea name="edit_wiki" id="edit_wiki">' );
+$template->add_content( 'content', $page_contents );
+$template->add_content( 'content', '</textarea><br></p>' );
+$template->add_content( 'content', '<p><label for="edit_pass">' . $lang['password'] . ': </label> <input type="text" name="edit_pass" id="edit_pass"> <input type="submit" name="edit_submit" value="' . $lang['submit'] . '"></p>' );
+$template->add_content( 'content', '</form>' );
 
 $template->add_js( 'ckeditor/ckeditor.js' );
 $template->add_js( $template->loc . 'editor.js' );
-
-$template->add_file( $template->loc . 'footer.php' );
 
 // No caching for this page.
 $template->compile( );

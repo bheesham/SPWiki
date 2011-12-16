@@ -15,6 +15,7 @@ $lang['submit'] 				= 'Submit';
 $lang['revisions']				= 'Revisions';
 $lang['no_revisions'] 			= 'No revisions';
 $lang['wrong_password'] 		= 'Wrong password.';
+$lang['compile_order_reserved']	= 'You\'re not allowed to use two consecutive underscores when setting the compile order.';
 $lang['could_not_write_cache'] 	= 'Could not write to the cache file';
 $lang['does_not_exist'] 		= 'does not exist.';
 $lang['open_dir_error'] 		= 'There was an error opening that directory.';

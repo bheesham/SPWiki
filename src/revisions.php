@@ -4,40 +4,49 @@ define( 'TEST', true );
 include 'includes/bootstrap.php';
 
 // Check to see if the page exists.
-if ( Page::page_exists( $wiki_page ) == false ) {
-	$template->add_file( $template->loc . 'header.php' );	
+if ( Page::page_exists( $wiki_page ) == false ) {	
 	$page_contents = Page::page_contents( $wiki_page );
 	$template->page_name = $lang['error_404'];
-	$template->add_file( $template->loc . '404.php' );
-	$template->add_file( $template->loc . 'footer.php' );
+	$template->add_content( '', $template->loc . '404.php', true );
 	$template->compile( true );
 } else {
-	$template->add_file( $template->loc . 'header.php' );
-	$template->page_name = $lang['revisions'] . ': ' . $template->page_name;
-	
-	$template->add_content( '<h1>' . $template->page_name . '</h1>' );
-	$template->add_content( '<ul>' );
-	
-	$revision_dir 		= ROOT . 'cache/' . $wiki_page . '/';
-	$revision_dir_index = $wiki_page . '/index';
-	
-	$dir_handle 		= opendir( $revision_dir );
-	if ( $dir_handle ) {
-		while ( ($file = readdir( $dir_handle ) ) !== false ) {
-		    if ( !is_dir( $revision_dir . $file ) && $file != 'index.html' ) {
-		    	$time = explode( '.', $file );
-				$time = date( 'd/m/Y \a\t H:i:s', $time[0] );
-		    	$template->add_content( "<li>$time</li>\r\n" );
-		    }
-		}
-		closedir( $dir_handle );
+	// Check to see if this page is cached. If not, cache it.
+	$page_cache = Page::cached( $wiki_page . '/index' , true );
+	if ( $page_cache != false ) {
+		echo $page_cache;
+		return true;
 	} else {
-		die( $lang['open_dir_error'] );
+		$template->page_name = $lang['revisions'] . ': ' . $template->page_name;
+		
+		$template->add_content( 'content', '<h1>' . $template->page_name . '</h1>' );
+		
+		$revision_dir 		= ROOT . 'cache/' . $wiki_page . '/';
+		$revision_dir_index = $wiki_page . '/index';
+		
+		if ( is_dir( $revision_dir ) ) {
+			$template->add_content( 'content', '<ul>' );
+			$dir_handle 		= opendir( $revision_dir );
+			if ( $dir_handle ) {
+				while ( ($file = readdir( $dir_handle ) ) !== false ) {
+				    if ( !is_dir( $revision_dir . $file ) && $file != 'index.html' ) {
+				    	$time 		= explode( '.', $file );
+						$time 		= $time[0];
+						$date 		= date( 'd/m/Y \a\t H:i:s', $time[0] );
+						$view_url 	= "revisions.php?l=$wiki_page&amp;view=$time";
+				    	$template->add_content( 'content', "<li>$date - <a href=\"$view_url\">View</a></li>\r\n" );
+				    }
+				}
+				closedir( $dir_handle );
+			} else {
+				die( $lang['open_dir_error'] );
+			}
+			$template->add_content( 'content', '</ul>' );	
+		} else {
+			mkdir( $revision_dir );
+			$template->add_content( 'content', "<p>No revisions.</p>" );
+		}
+		
+		// Cache this page.
+		$template->compile( true, $revision_dir_index );	
 	}
-	
-	$template->add_content( '</ul>' );
-	$template->add_file( $template->loc . 'footer.php' );
-	
-	// Cache this page.
-	$template->compile( true, $revision_dir_index );
 }

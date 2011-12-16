@@ -6,59 +6,64 @@ if ( !defined( 'TEST' ) ) {
 
 // A class to manage the template ( cache, display, etc )
 class Template {
-
-	public $page_name;
+	
 	// Goes into the <title> tag
-	public $wiki_page;
+	public $page_name;
 	// Actual wiki page
-	public $loc;
+	public $wiki_page;
 	// Location of the template directory
-	private $meta = array( );
+	public $loc;
+	// What's the compile order?
+	public $compile_order;
 	// Meta tags to add
-	private $js = array( );
+	private $meta = array( );
 	// JS scripts to add
+	private $js = array( );
+	// Style sheets to add
 	private $css = array( );
-	// Stylesheets to add
-	private $content = array( );
 	// The files and content to display
-
+	private $content = array( );
+	
+	// When we construct it, pass a few variables along right away!
 	function __construct( $locale, $lang ) {
 		$this->locale = $locale;
 		$this->lang = $lang;
 		return true;
 	}
-
-	// Will simply include the file
-	function add_file( $file ) {
-		if ( !file_exists( $file ) ) {
-			trigger_error( $file . $this->lang['does_not_exist'], E_USER_ERROR );
-			return false;
-		}
-		$this->content[] = array( 'file', $file );
-		return true;
-	}
-
-	// Will add HTML content
-	function add_content( $content ) {
-		$this->content[] = array( 'content', $content );
-		return true;
-	}
-
+	
+	// Add meta tags
 	function add_meta( $type, $name, $content ) {
 		$this->meta[] = array( $type, $name, $content );
 		return true;
 	}
-
+	
+	// Add JavaScript sources
 	function add_js( $js_src ) {
 		$this->js[] = $js_src;
 		return true;
 	}
-
+	
+	// Add style sheets
 	function add_css( $css_src ) {
 		$this->css[] = $css_src;
 		return true;
 	}
-
+	
+	// Will add content
+	function add_content( $placement, $content, $is_file = false ) {
+		if ( $is_file == true ) {
+			if ( !file_exists( $content ) ) {
+				trigger_error( $file . $this->lang['does_not_exist'], E_USER_ERROR );
+				return false;
+			}
+			$this->content[$placement][] = array( 'file', $content );
+			return true;
+		}
+		$this->content[$placement][] = array( 'text', $content );
+		return true;
+	}
+	
+	// Compile it all!
 	function compile( $cache = false, $location = '' ) {
 		// If this function is called, that means we need to cache the page,
 		// unless we're told not to.
@@ -66,12 +71,16 @@ class Template {
 			ob_start( );
 			$output = '';
 		}
-
-		foreach ( $this->content as $content ) {
-			if ( $content[0] == 'file' ) {
-				include $content[1];
-			} else {
-				echo $content[1];
+		
+		foreach ( $this->compile_order as $key ) {
+			if ( isset( $this->content[$key] ) && !empty( $this->content[$key] ) ) {
+				foreach ( $this->content[$key] as $content ) {
+					if ( $content[0] == 'file' ) {
+						include $content[1];
+					} else {
+						echo $content[1];
+					}
+				}	
 			}
 		}
 		
