@@ -57,4 +57,4 @@ $template->add_js( 'ckeditor/ckeditor.js' );
 $template->add_js( $template->loc . 'editor.js' );
 
 // No caching for this page.
-$template->compile( );
+$template->compile();

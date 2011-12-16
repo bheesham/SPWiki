@@ -7,7 +7,6 @@ include 'includes/bootstrap.php';
 $page_cache = Page::cached( sha1( $wiki_page ), true );
 if ( $page_cache != false ) {
 	echo $page_cache;
-	return true;
 } else {
 	$page_contents = Page::page_contents( $wiki_page );
 
