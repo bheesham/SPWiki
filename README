@@ -3,3 +3,8 @@ All parts of SPWiki are considered to be
 BeerWare <http://en.wikipedia.org/wiki/Beerware>
 
 This software is provided without any warranty.
+
+
+NTS: Save the content files, not the cached files 
+as the revisions. Not sure why I didn't do this 
+first but at least I'll do it later.
