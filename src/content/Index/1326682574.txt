@@ -2,3 +2,5 @@
 	SPWiki.</h1>
 <p>
 	A small, PHP, flat-file wiki script made for users.</p>
+<p>
+	test</p>

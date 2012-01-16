@@ -9,13 +9,13 @@ class Page {
 
 	// Will replace all special characters except for parenthesis with underscores.
 	static function get_file_name( $page_name ) {
-		$regexp = '@([^a-zA-Z0-9\(\)])@';
+		$regexp = '@([^a-zA-Z0-9\(\)\-\.])@';
 		return preg_replace( $regexp, '_', $page_name );
 	}
 
 	// Check to see if a cache file exists.
-	static function cached( $location, $return_content = false ) {
-		$cache_file = ROOT . 'cache/' . $location . '.html';
+	static function cached( $wiki_page, $return_content = false ) {
+		$cache_file = ROOT . 'cache/' . sha1( $wiki_page ) . '.html';
 		// Does this file exist?
 		if ( file_exists( $cache_file ) ) {
 			if ( $return_content == false ) {
@@ -44,12 +44,33 @@ class Page {
 	// Checks to see if a wiki page has revisions.
 	static function has_revisions( $wiki_page ) {
 		$contents 	= ROOT . 'content/' . $wiki_page . '.txt';
-		$cache 		= ROOT . 'cache/' . sha1( $wiki_page ) . '.html';
-		$rev_dir 	= ROOT . 'cache/' . $wiki_page . '/';
-		if ( file_exists( $contents ) && file_exists( $cache ) && is_dir( $rev_dir ) ) {
-			return true;
+		$rev_dir 	= ROOT . 'content/' . $wiki_page . '/';
+		// First of all, check to make sure that the file exists
+		if ( !file_exists( $contents ) ) {
+			return false;
 		}
-		return false;
+		
+		if ( !is_dir( $rev_dir ) ) {
+			mkdir( $rev_dir );
+			return false;
+		}
+		
+		// Next, check for revisions
+		$files = 0;
+		if ( $handle = opendir( $rev_dir ) ) {
+		    while ( false !== ( $file = readdir( $handle ) ) ) {
+		        if ( $file != '.' && $file != '..' ) {
+		            $files++;
+		        }
+		    }
+		    closedir($handle);
+		}
+		if ( $files == 0 ) {
+			return false;
+		}
+		
+		// If it gets here, then there are indeed revisions of the wiki page
+		return true;
 	}
 	
 	

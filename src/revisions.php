@@ -28,15 +28,14 @@ if ( Page::page_exists( $wiki_page ) == false ) {
 		} else {
 			$template->page_name = $lang['revisions'] . ': ' . $template->page_name;
 			$template->add_content( 'content', '<h1>' . $template->page_name . '</h1>' );
-			// Generate the index file
-			$revision_dir 		= ROOT . 'cache/' . $wiki_page . '/';
-			$revision_dir_index = $wiki_page . '/index';
-			if ( is_dir( $revision_dir ) ) {
+			
+			if ( Page::has_revisions( $wiki_page ) ) {
 				$template->add_content( 'content', '<ul>' );
+				$revision_dir 		= ROOT . 'content/' . $wiki_page. '/';
 				$dir_handle 		= opendir( $revision_dir );
 				if ( $dir_handle ) {
-					while ( ($file = readdir( $dir_handle ) ) !== false ) {
-					    if ( !is_dir( $revision_dir . $file ) && $file != 'index.html' ) {
+					while ( ( $file = readdir( $dir_handle ) ) !== false ) {
+					    if ( !is_dir( $revision_dir . $file ) ) {
 					    	// Display the time that each revision was made
 					    	$time 		= explode( '.', $file );
 							$time 		= $time[0];
@@ -51,11 +50,10 @@ if ( Page::page_exists( $wiki_page ) == false ) {
 				}
 				$template->add_content( 'content', '</ul>' );	
 			} else {
-				mkdir( $revision_dir );
 				$template->add_content( 'content', "<p>No revisions.</p>" );
 			}
 			// Cache this page.
-			$template->compile( true, $revision_dir_index );
+			$template->compile( true, $wiki_page . 'revision_index' );
 		}
 	}
 }

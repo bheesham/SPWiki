@@ -4,7 +4,7 @@ define( 'TEST', true );
 include 'includes/bootstrap.php';
 
 // Check to see if the page was cached.
-$page_cache = Page::cached( sha1( $wiki_page ), true );
+$page_cache = Page::cached( $wiki_page, true );
 if ( $page_cache != false ) {
 	echo $page_cache;
 } else {
@@ -18,6 +18,5 @@ if ( $page_cache != false ) {
 	}
 	
 	// Set up caching for this page
-	$cache_file_name 	= sha1( $wiki_page );
-	$template->compile( true, $cache_file_name );
+	$template->compile( true, $wiki_page );
 }
