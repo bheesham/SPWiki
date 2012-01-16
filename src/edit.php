@@ -10,10 +10,10 @@ if ( isset( $_POST['edit_submit'] ) && isset( $_POST['edit_pass'] ) ) {
 		$wiki_file_path 	= ROOT . 'content/' . $wiki_page . '.txt';
 		
 		// Old cache file
-		$cache_file 		= ROOT . 'cache/' . sha1( $wiki_page ) . '.html';
+		$cache_file 		= ROOT . 'cache/' . sha1( TEMPLATE_NAME . $wiki_page ) . '.html';
 		
 		// Revision Directory Index
-		$revision_dir_index	= ROOT . 'cache/' . sha1( $wiki_page . 'revision_index' ) . '.html';
+		$revision_dir_index	= ROOT . 'cache/' . sha1( TEMPLATE_NAME . $wiki_page . 'revision_index' ) . '.html';
 		
 		if ( !is_dir( $revision_dir ) ) {
 			mkdir( $revision_dir );

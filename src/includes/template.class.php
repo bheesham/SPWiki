@@ -88,7 +88,7 @@ class Template {
 			// Save the output to a file
 			$output = ob_get_contents( );
 			ob_end_flush( );
-			$handle = fopen( ROOT . 'cache/' . sha1( $location ) . '.html', 'w' );
+			$handle = fopen( ROOT . 'cache/' . sha1( TEMPLATE_NAME . $location ) . '.html', 'w' );
 			$result = fwrite( $handle, $output );
 			if ( $result == false ) {
 				trigger_error( $this->lang['could_not_write_cache'] . ': ' . $cache_file, E_USER_ERROR );

@@ -20,7 +20,9 @@ include $language_file;
 
 $template 				= new Template( $locale, $lang );
 $template->site_name 	= $site_name;
+
 // Load the template configuration but only if the template requires it.
+define( 'TEMPLATE_NAME', sha1( $template_name ) );
 $template_path 		= 'template/' . $template_name . '/';
 $template_config 	= ROOT . 'template/' . $template_name . '/config.php';
 if ( !file_exists( $template_config ) ) {

@@ -15,7 +15,7 @@ class Page {
 
 	// Check to see if a cache file exists.
 	static function cached( $wiki_page, $return_content = false ) {
-		$cache_file = ROOT . 'cache/' . sha1( $wiki_page ) . '.html';
+		$cache_file = ROOT . 'cache/' . sha1( TEMPLATE_NAME . $wiki_page ) . '.html';
 		// Does this file exist?
 		if ( file_exists( $cache_file ) ) {
 			if ( $return_content == false ) {
